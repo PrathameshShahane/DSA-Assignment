@@ -1,0 +1,309 @@
+#include <iostream>
+using namespace std;
+class node
+{
+   public:
+   int key;
+   int data;
+   node *next;
+   node *previous;
+   node()
+   {
+     key=0;
+     data=0;
+     next=NULL;
+     previous=NULL;
+   }
+   node(int k,int d)
+   {
+     key=k;
+     data=d;
+     next=NULL;
+     previous=NULL;
+   }
+};
+class doublyLinkList
+{
+  public:
+  node *head,*n1;
+  doublyLinkList()
+  {
+    head=NULL;
+  }
+  void appendnode(node *n);
+  void display();
+  void prependnode(node *n);
+  node* nodeExists(int k);
+  void insertafterkey(int k,node *n);
+  void deletenode(int k);
+  void evenodd();
+  };
+node* doublyLinkList :: nodeExists(int k)
+{
+  node *ptr=head;
+  node *temp=NULL;
+  while(ptr!=NULL)
+{
+  if(ptr->data==k  )
+{
+  temp=ptr; 
+}
+  ptr=ptr->next; 
+}
+  return temp;
+}
+  void doublyLinkList:: appendnode(node *n)
+  {
+    int d;
+    cout<<"Enter the data: "<<endl;
+    cin>>d;
+    n->data=d;
+
+        if(head==NULL)
+        {
+           head=n;
+           cout<<"Node appended"<<endl;
+        }
+        else
+        {
+          node *current=head;
+          while(current->next!=NULL)
+          {
+            current=current->next;
+          }
+          
+          current->next=n;
+          n->previous=current;
+           cout<<"Node appended"<<endl;
+        }
+  }
+void doublyLinkList::prependnode(node*n)
+{
+   node *ptr=head;
+   head->previous=n;
+   n->next=head;
+   head=n;
+   cout<<"Node Prepended"<<endl;
+}
+void doublyLinkList::insertafterkey(int k,node *n)
+{
+  node *ptr=nodeExists(k);
+  if(ptr==NULL)
+{
+  cout<<"Reenter with unique key,keyvalue "<<n->key<<"already exists"<<endl;
+  return;
+}
+  else
+    {
+      if(nodeExists(n->key)!=NULL)
+        {
+         
+          cout<<"Node with key value "<<k<<"already exists"<<endl;
+        }
+      else
+        {
+          node *nextnode=ptr->next;
+          if(nextnode==NULL)
+          {
+            ptr->next=n;
+            n->previous=ptr;
+            cout<<"Node inserted "<<endl;
+          }
+          else
+          {
+            n->next=nextnode;
+            nextnode->previous=n;
+            n->previous=ptr;
+            ptr->next=n;
+            cout<<"Node inserted after key: "<<k<<endl;
+          }
+        }
+    }
+}
+void doublyLinkList:: deletenode(int k)
+{
+   node *ptr=nodeExists(k);
+   if(ptr==NULL)
+    {
+       cout<<"No node exists with key value: "<<k<<endl;
+     }
+  else
+     {
+       node *nextnode=ptr->next;
+       node *previousnode=ptr->previous;
+        if(head->data==k)
+         {
+           head=head->next;
+           cout<<"Node deleted"<<endl;
+         }
+       else
+         {
+           if(nextnode==NULL)
+           {
+             previousnode->next=NULL;
+             cout<<"Node deleted"<<endl;
+           }
+           else
+           {
+             previousnode->next=nextnode;
+             nextnode->previous=previousnode;
+             cout<<"Node deleted"<<endl;
+           }
+         }
+     }
+}
+void doublyLinkList:: display()
+{
+  node *ptr=head;
+  if(head==NULL  )
+    {
+      cout<<"List is empty"<<endl;
+    }
+  else
+    {
+      while(ptr!=NULL)
+        {
+          cout<<"["<<ptr->key<<","<<ptr->data<<"]";
+          if(ptr->next!=NULL)
+             {
+               cout<<"-->";
+           }
+           ptr=ptr->next;
+        }
+      cout<<endl;
+    }
+}
+void doublyLinkList:: evenodd()
+{
+ node *ptr=head;
+ node *p=head;
+ int choice;
+ cout<<"Select even or odd[1:EVEN 0:ODD]:"<<endl;
+ cin>>choice;
+ if(choice==0)
+ {
+   cout<<"ODD VALUES ARE: ";
+ while(ptr!=NULL)
+ {
+   if((ptr->data&1)==1)
+   {
+     cout<<ptr->data<<" ";
+   }
+   ptr=ptr->next;
+ }
+  cout<<endl;
+ }
+else 
+{
+   cout<<"EVEN VALUES ARE: ";
+  while(p!=NULL)
+ {
+     if((p->data&1)==0)
+   {
+    
+     if(p->next!=NULL)
+     cout<<p->data<<" ";
+   }
+   p=p->next;
+ }
+ cout<<endl;
+}
+}
+
+int main()
+{
+    doublyLinkList s;
+    while(1)
+    {
+   
+    cout<<"Enter the operations to be performed:"<<endl;
+     cout<<"0:EXIT"<<endl;
+    cout<<"1:Append Node"<<endl;
+    cout<<"2:Append Node After the given key"<<endl;
+    cout<<"3:Prepend Node"<<endl;
+    cout<<"4:Deleting a node"<<endl;
+    cout<<"5:DISPLAY"<<endl;
+    cout<<"6:Display even and odd terms"<<endl;
+    int op;
+    cout<<"Choose one of the above operations to be performed"<<endl;
+    cin>>op;
+    switch(op)
+    {
+        case 1:
+        {
+            
+            int size;
+            cout<<"Enter the number of employees to be inserted: ";
+            cin>>size;
+            for(int i=0;i<size;i++)
+             {
+                 node *p=new node();
+                 int k;
+                 cout<<"Enter a unique key for each employee:";
+                 cin>>k;
+                 p->key=k;
+                 int info;
+                 string n;
+                 cout<<"enter the emp_id: ";
+                 cin>>info;
+                 p->data=info;
+                 s.appendnode(p);
+             }
+             break;
+        }
+        case 2:
+        {
+            node *p=new node();
+            int key_append;
+            int k;
+            cout<<"Enter a unique key for each employee:";
+            cin>>k;
+            p->key=k;
+            int info;
+            cout<<"enter the emp_id: ";
+            cin>>info;
+            p->data=info;
+            cout<<"Enter the emp_id after which you have to insert the data"<<endl;
+            cin>>key_append;
+            s.insertafterkey(key_append,p);
+            break;
+        }
+        case 3:
+        {
+            node *p=new node();
+            int k;
+            cout<<"Enter a unique key foe each employee:";
+            cin>>k;
+            p->key=k;
+            int info;
+            cout<<"enter the emp_id: ";
+            cin>>info;
+            p->data=info;
+            s.prependnode(p);
+            break;
+        }
+        case 4:
+        {
+          int emp_id;
+          cout<<"Enter the employee id to be deleated: ";
+          cin>>emp_id;
+          s.deletenode(emp_id);
+          break;
+        }
+        case 5:
+        {
+        s.display();
+        break;
+        }
+        case 6:
+        {
+          s.evenodd();
+          break;
+        }
+    }
+    if(op==0)
+    break;  
+ }
+ cout<<"THANK YOU"<<endl;
+    return 0;
+}
