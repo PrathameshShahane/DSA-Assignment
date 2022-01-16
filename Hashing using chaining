@@ -1,0 +1,108 @@
+#include<bits/stdc++.h>
+#include<iostream>
+#include<vector>
+using namespace std;
+class Hash
+{
+   private:
+   vector<int> *v;
+   int size;
+   public:
+   Hash(int vsize)
+   {
+       size=vsize;
+       v=new vector<int>[size];
+   }
+   int hash(int data)
+   {
+       return (data%size);
+   }
+   void insert()
+   {
+       int emp_id;
+       cout<<"Enter the employee id :"<<endl;
+       cin>>emp_id;
+       int index=hash(emp_id);
+       v[index].push_back(emp_id);
+   }
+   void display()
+   {
+       for(int i=0;i<size;i++)
+       {
+           cout<<"Slots["<< i <<"]:";
+           for(auto it:v[i])
+           {
+               cout<<" "<<it;
+           }
+           cout<<endl;
+       }
+       
+   }
+   void search()
+   {
+       cout<<"Enter the emp_id to be searched"<<endl;
+       int key;
+       cin>>key;
+       int index=hash(key);
+       auto it=find(v[index].begin(),v[index].end(),key);
+       for(it=v[index].begin();it!=v[index].end();it++)
+       {
+         if(*it==key)
+         break;
+       }
+         if(it!=v[index].end())
+         cout<<"Emp_id exist at INDEX: "<<index<<endl;
+         else
+         cout<<"Employee not found"<<endl;
+   }
+   void deleteItem()
+   {
+       cout<<"Enter the emp_id to be Deleted"<<endl;
+       int key;
+       cin>>key;
+       int index=hash(key);
+       auto it=find(v[index].begin(),v[index].end(),key);
+       v[index].erase(it);
+       cout<<"Value at index "<<index<<" has been deleated successfully"<<endl;
+   }
+};
+int main()
+{
+  Hash ht(10);
+  while(1)
+  {
+  cout<<"# #Employee management using Hash Table # #";
+  cout<<"\n1. Add new Employee";
+  cout<<"\n2. Display Employee Ids";
+  cout<<"\n3. Search Employee";
+  cout<<"\n4. Delete an Employee";
+  cout<<"\n5. Exit"<<endl;
+  
+  int ch=0;
+  
+    cout<<"Enter choice: ";
+    cin>>ch;
+    switch(ch){
+      case 1: 
+        ht.insert();
+        break;
+      case 2:
+        ht.display();
+        break;
+      case 3:
+        ht.search();
+        break;
+      case 4:
+        ht.deleteItem();
+        break;
+      case 5:
+        cout<<"Thanks"<<endl;
+        break;
+      default:
+        cout<<"Please enter a valid choice !!";      
+    }
+   if(ch==5)
+   break;
+  }
+    return 0;
+}
